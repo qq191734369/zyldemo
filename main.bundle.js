@@ -126,6 +126,7 @@ var AddCommentComponent = (function () {
     function AddCommentComponent(videoService) {
         this.videoService = videoService;
         this.islogin = false;
+        this.islogin = this.videoService.isLogin;
     }
     AddCommentComponent.prototype.ngOnInit = function () {
         var _this = this;
