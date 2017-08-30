@@ -87,7 +87,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".add-comment-container{\r\n    padding-top: 20px;\r\n    padding-bottom: 20px;\r\n    border-bottom: solid 1px #b6b7be;\r\n}\r\n.add-comment-container>.user-face{\r\n    display: inline-block;\r\n    width: 48px;\r\n    height: 48px;\r\n    vertical-align: top;\r\n}\r\n.add-comment-container>.comment-textarea{\r\n    display: inline-block;\r\n    margin-left: 30px;\r\n    width: calc(100% - 48px - 30px - 30px);\r\n    vertical-align: top;\r\n}\r\n.add-comment-container>.comment-textarea>textarea{\r\n    height: 70px;\r\n    width: calc(100% - 100px);\r\n    display: inline-block;\r\n    vertical-align: top;\r\n    border-radius: 6px;\r\n    background-color: #e5e9ef;\r\n}\r\n.add-comment-container>.comment-textarea>textarea.focus,\r\n.add-comment-container>.comment-textarea>textarea.hover{\r\n    background-color: white;\r\n    border-color: #00a1d6;\r\n}\r\n.add-comment-container>.comment-textarea>button{\r\n    width: 70px;\r\n    height: 70px;\r\n    display: inline-block;\r\n    vertical-align: top;\r\n    border-radius: 6px;\r\n    padding: 5px 15px;\r\n    background-color: #00a1d6;\r\n    border: 1px solid #00a1d6;\r\n    color: white;\r\n}", ""]);
+exports.push([module.i, ".add-comment-container{\r\n    padding-top: 20px;\r\n    padding-bottom: 20px;\r\n    border-bottom: solid 1px #b6b7be;\r\n}\r\n.add-comment-container>.user-face{\r\n    display: inline-block;\r\n    width: 48px;\r\n    height: 48px;\r\n    vertical-align: top;\r\n}\r\n.add-comment-container>.comment-textarea{\r\n    display: inline-block;\r\n    margin-left: 30px;\r\n    width: calc(100% - 48px - 30px - 30px);\r\n    vertical-align: top;\r\n    position: relative;\r\n}\r\n.add-comment-container>.comment-textarea>textarea{\r\n    height: 70px;\r\n    width: calc(100% - 100px);\r\n    display: inline-block;\r\n    vertical-align: top;\r\n    border-radius: 6px;\r\n    background-color: #e5e9ef;\r\n}\r\n.add-comment-container>.comment-textarea>textarea.focus,\r\n.add-comment-container>.comment-textarea>textarea.hover{\r\n    background-color: white;\r\n    border-color: #00a1d6;\r\n}\r\n.add-comment-container>.comment-textarea>.no-login{\r\n    content: \"\";\r\n    height: 70px;\r\n    position: absolute;\r\n    width: 100%;\r\n    background-color: rgba(80,80,80,1);\r\n    z-index: 1000;\r\n    left: 0;\r\n    top: 0;\r\n    text-align: center;\r\n    font-size: 20px;\r\n    color:white;\r\n    line-height: 70px;\r\n    border-radius: 6px;\r\n}\r\n.add-comment-container>.comment-textarea>.no-login.login{\r\n    display: none;\r\n}\r\n.add-comment-container>.comment-textarea>button{\r\n    width: 70px;\r\n    height: 70px;\r\n    display: inline-block;\r\n    vertical-align: top;\r\n    border-radius: 6px;\r\n    padding: 5px 15px;\r\n    background-color: #00a1d6;\r\n    border: 1px solid #00a1d6;\r\n    color: white;\r\n}\r\n.add-comment-container>.comment-textarea>button.unuse{\r\n\r\n}", ""]);
 
 // exports
 
@@ -100,7 +100,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/add-comment/add-comment.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"add-comment-container\">\n  <div class=\"user-face\">\n    <img src=\"http://placehold.it/48x48\" alt=\"用户头像\" class=\"img-circle\">\n  </div>\n  <div class=\"comment-textarea\">\n    <textarea placeholder=\"请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。\"></textarea>\n    <button type=\"submit\" (click)=\"onAddComment($event)\">发表评论</button>\n  </div>\n</div>\n"
+module.exports = "<div class=\"add-comment-container\">\n  <div class=\"user-face\">\n    <img src=\"http://placehold.it/48x48\" alt=\"用户头像\" class=\"img-circle\">\n  </div>\n  <div class=\"comment-textarea\">\n    <textarea placeholder=\"请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。\"></textarea>\n    <button type=\"submit\" (click)=\"onAddComment($event)\">发表评论</button>\n    <div class=\"no-login\" [class.login]=\"islogin\">请先登录</div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -109,6 +109,7 @@ module.exports = "<div class=\"add-comment-container\">\n  <div class=\"user-fac
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__share_videos_service__ = __webpack_require__("../../../../../src/app/share/videos.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AddCommentComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -120,12 +121,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var AddCommentComponent = (function () {
-    function AddCommentComponent() {
+    function AddCommentComponent(videoService) {
+        this.videoService = videoService;
+        this.islogin = false;
     }
     AddCommentComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.buttonHover();
         this.textareaHoverAndFocus();
+        this.videoService.loginEvent.subscribe(function (param) {
+            _this.islogin = param;
+        });
     };
     // 发表评论按钮效果
     AddCommentComponent.prototype.buttonHover = function () {
@@ -166,6 +174,7 @@ var AddCommentComponent = (function () {
     /////////添加评论按钮/////////////
     AddCommentComponent.prototype.onAddComment = function (e) {
         console.log(e.srcElement.previousElementSibling.value);
+        console.log(this.islogin);
     };
     return AddCommentComponent;
 }());
@@ -175,9 +184,10 @@ AddCommentComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/add-comment/add-comment.component.html"),
         styles: [__webpack_require__("../../../../../src/app/add-comment/add-comment.component.css")]
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__share_videos_service__["a" /* VideosService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__share_videos_service__["a" /* VideosService */]) === "function" && _a || Object])
 ], AddCommentComponent);
 
+var _a;
 //# sourceMappingURL=add-comment.component.js.map
 
 /***/ }),
@@ -1486,7 +1496,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".nav {\r\n    height: 50px;\r\n}\r\n.navbar-inverse{\r\n    background-color: rgba(0,0,0,0.5);\r\n}\r\nul>li>a.nav-icon{\r\n    padding: 0;\r\n    line-height: 0;\r\n}\r\nul>li.bg-danger{\r\n    background-color: hotpink;\r\n    height: 55px;\r\n    border-radius: 0 0 4px 4px;\r\n}\r\nul>li.bg-danger>a{\r\n    color: white;\r\n}\r\n.btn-pink{\r\n    background-color: hotpink;\r\n    border: solid palevioletred 1px;\r\n}\r\n@media screen and (max-width: 768px){\r\n    ul>li>a.nav-icon{\r\n        padding: 10px;\r\n    }\r\n    ul>li>a.nav-icon>img{\r\n        height: 30px;\r\n        width: 30px;\r\n    }\r\n    ul>li.bg-danger{\r\n        background-color: transparent;\r\n    }\r\n    .nav {\r\n        height: auto;\r\n    }\r\n}", ""]);
+exports.push([module.i, ".nav {\r\n    height: 50px;\r\n}\r\n.navbar-inverse{\r\n    background-color: rgba(0,0,0,0.5);\r\n}\r\nul>li>a.nav-icon{\r\n    padding: 0;\r\n    line-height: 0;\r\n}\r\nul>li.bg-danger{\r\n    background-color: hotpink;\r\n    height: 55px;\r\n    border-radius: 0 0 4px 4px;\r\n}\r\nul>li.bg-danger>a{\r\n    color: white;\r\n}\r\n.btn-pink{\r\n    background-color: hotpink;\r\n    border: solid palevioletred 1px;\r\n}\r\n@media screen and (max-width: 768px){\r\n    ul>li>a.nav-icon{\r\n        padding: 10px;\r\n    }\r\n    ul>li>a.nav-icon>img{\r\n        height: 30px;\r\n        width: 30px;\r\n    }\r\n    ul>li.bg-danger{\r\n        background-color: transparent;\r\n    }\r\n    .nav {\r\n        height: auto;\r\n    }\r\n}\r\n.login-modal-body{\r\n    text-align: center;\r\n}", ""]);
 
 // exports
 
@@ -1499,7 +1509,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/navbar/navbar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <nav class=\"navbar navbar-inverse navbar-fixed-top\">\n    <div class=\"container\">\n      <div class=\"navbar-header\">\n        <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#ul-content\">\n          <span class=\"sr-only\">切换</span>\n          <span class=\"icon-bar\"></span>\n          <span class=\"icon-bar\"></span>\n          <span class=\"icon-bar\"></span>\n        </button>\n        <a href=\"#\" class=\"navbar-brand\">首页</a>\n      </div>\n      <div class=\"collapse navbar-collapse\" id=\"ul-content\">\n        <ul class=\"nav navbar-nav\">\n          <li><a href=\"#\">上天</a></li>\n          <li><a href=\"#\">滚</a></li>\n          <li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">厉害了 <span class=\"caret\"></span></a>\n            <ul class=\"dropdown-menu\">\n              <li><a href=\"\">aaa</a></li>\n              <li><a href=\"\">bbb</a></li>\n              <li><a href=\"\">ccc</a></li>\n            </ul>\n          </li>\n        </ul>\n        <ul class=\"nav navbar-nav navbar-right\">\n          <li><a href=\"#\" class=\"nav-icon\" data-toggle=\"modal\" data-target=\"#myModal\"><img src=\"http://placehold.it/50x50\" alt=\"\" class=\"img-circle\"></a></li>\n          <li><a href=\"#\">消息</a></li>\n          <li><a href=\"#\">动态</a></li>\n          <li><a href=\"#\">稍后再看</a></li>\n          <li><a href=\"#\">历史</a></li>\n          <li><a href=\"#\">收藏夹</a></li>\n          <li class=\"bg-danger\"><a href=\"#\">投稿</a></li>\n        </ul>\n      </div>\n    </div>\n  </nav>\n</div>\n<div class=\"modal fade\" id=\"myModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\">\n  <div class=\"modal-dialog\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n        <h4 class=\"modal-title\" id=\"myModalLabel\">注册/登录</h4>\n      </div>\n      <div class=\"modal-body\">\n      <ul class=\"nav nav-tabs\" role=\"tablist\">\n        <li role=\"presentation\" class=\"active\"><a href=\"#sign\" aria-controls=\"home\" role=\"tab\" data-toggle=\"tab\">注册</a></li>\n        <li role=\"presentation\"><a href=\"#login\" aria-controls=\"profile\" role=\"tab\" data-toggle=\"tab\">登录</a></li>\n      </ul>\n      <div class=\"tab-content\">\n        <div role=\"tabpanel\" class=\"tab-pane active\" id=\"sign\">\n          <form [formGroup]=\"formModule1\" novalidate (ngSubmit)=\"onSignSubmit()\">\n            <div class=\"form-group\" [class.has-error]=\"formModule1.hasError('required','username')||formModule1.hasError('minlength','username')\">\n              <label for=\"username\" class=\"control-label\">用户名：</label>\n              <input type=\"text\" id=\"username\" placeholder=\"请输入用户名\" class=\"form-control\" formControlName=\"username\">\n              <span [class.hidden]=\"!formModule1.hasError('required','username')\" class=\"help-block\">用户名必填</span>\n              <span [class.hidden]=\"!formModule1.hasError('minlength','username')\" class=\"help-block\">用户名长度大于6</span>\n            </div>\n            <div formGroupName=\"passwordGroup\">\n              <div class=\"form-group\" [class.has-error]=\"formModule1.hasError('minlength',['passwordGroup','password'])\">\n                <label for=\"password\" class=\"control-label\">密码：</label>\n                <input type=\"password\" id=\"password\" placeholder=\"请输入密码\" class=\"form-control\" formControlName=\"password\">\n                <span [class.hidden]=\"!formModule1.hasError('minlength',['passwordGroup','password'])\" class=\"help-block\">密码必须大于6位</span>\n              </div>\n              <div class=\"form-group\" [class.has-error]=\"formModule1.hasError('passwordNoEquail','passwordGroup')\">\n                <label for=\"pass-confirm\" class=\"control-label\">确认密码：</label>\n                <input type=\"password\" id=\"pass-confirm\" placeholder=\"确认密码\" class=\"form-control\" formControlName=\"passwordConfirm\">\n                <span [class.hidden]=\"!formModule1.hasError('passwordNoEquail','passwordGroup')\" class=\"help-block\">两次密码必须相同</span>\n              </div>\n            </div>\n            <button class=\"btn btn-primary btn-pink\" type=\"submit\" >提交</button>\n          </form>\n        </div>\n        <div role=\"tabpanel\" class=\"tab-pane\" id=\"login\">\n          <form [formGroup]=\"formModule2\" (ngSubmit)=\"onLogin()\">\n            <div class=\"form-group\" [class.has-error]=\"formModule2.hasError('minlength','username_login')||formModule2.hasError('required','username_login')\">\n              <label for=\"username\" class=\"control-label\">用户名：</label>\n              <input type=\"text\" id=\"username-login\" placeholder=\"请输入用户名\" class=\"form-control\" formControlName=\"username_login\">\n              <span [class.hidden]=\"!formModule2.hasError('minlength','username_login')\" class=\"help-block\">长度必须大于6</span>\n              <span [class.hidden]=\"!formModule2.hasError('required','username_login')\" class=\"help-block\">是必填项</span>\n            </div>\n            <div class=\"form-group\" [class.has-error]=\"formModule2.hasError('minlength','password_login')||formModule2.hasError('required','password_login')\">\n              <label for=\"password\" class=\"control-label\">密码：</label>\n              <input type=\"password\" id=\"password-login\" placeholder=\"请输入密码\" class=\"form-control\" formControlName=\"password_login\">\n              <span [class.hidden]=\"!formModule2.hasError('minlength','password_login')\" class=\"help-block\">长度必须大于6</span>\n              <span [class.hidden]=\"!formModule2.hasError('required','password_login')\" class=\"help-block\">是必填项</span>\n            </div>\n            <button type=\"submit\" class=\"btn btn-primary btn-pink\">提交</button>\n          </form>\n        </div>\n      </div>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">取消</button>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"container\">\n  <nav class=\"navbar navbar-inverse navbar-fixed-top\">\n    <div class=\"container\">\n      <div class=\"navbar-header\">\n        <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#ul-content\">\n          <span class=\"sr-only\">切换</span>\n          <span class=\"icon-bar\"></span>\n          <span class=\"icon-bar\"></span>\n          <span class=\"icon-bar\"></span>\n        </button>\n        <a href=\"#\" class=\"navbar-brand\">首页</a>\n      </div>\n      <div class=\"collapse navbar-collapse\" id=\"ul-content\">\n        <ul class=\"nav navbar-nav\">\n          <li><a href=\"#\">上天</a></li>\n          <li><a href=\"#\">滚</a></li>\n          <li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">厉害了 <span class=\"caret\"></span></a>\n            <ul class=\"dropdown-menu\">\n              <li><a href=\"\">aaa</a></li>\n              <li><a href=\"\">bbb</a></li>\n              <li><a href=\"\">ccc</a></li>\n            </ul>\n          </li>\n        </ul>\n        <ul class=\"nav navbar-nav navbar-right\">\n          <li><a href=\"#\" class=\"nav-icon\" data-toggle=\"modal\" data-target=\"#myModal\"><img src=\"http://placehold.it/50x50\" alt=\"\" class=\"img-circle\"></a></li>\n          <li><a href=\"#\">消息</a></li>\n          <li><a href=\"#\">动态</a></li>\n          <li><a href=\"#\">稍后再看</a></li>\n          <li><a href=\"#\">历史</a></li>\n          <li><a href=\"#\">收藏夹</a></li>\n          <li class=\"bg-danger\"><a href=\"#\">投稿</a></li>\n        </ul>\n      </div>\n    </div>\n  </nav>\n</div>\n<div class=\"modal fade\" id=\"myModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\">\n  <div class=\"modal-dialog\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n        <h4 class=\"modal-title\" id=\"myModalLabel\">注册/登录</h4>\n      </div>\n      <div class=\"modal-body\">\n      <ul class=\"nav nav-tabs\" role=\"tablist\">\n        <li role=\"presentation\" class=\"active\"><a href=\"#sign\" aria-controls=\"home\" role=\"tab\" data-toggle=\"tab\">注册</a></li>\n        <li role=\"presentation\"><a href=\"#login\" aria-controls=\"profile\" role=\"tab\" data-toggle=\"tab\">登录</a></li>\n      </ul>\n      <div class=\"tab-content\">\n        <div role=\"tabpanel\" class=\"tab-pane active\" id=\"sign\">\n          <form [formGroup]=\"formModule1\" novalidate (ngSubmit)=\"onSignSubmit()\">\n            <div class=\"form-group\" [class.has-error]=\"formModule1.hasError('required','username')||formModule1.hasError('minlength','username')\">\n              <label for=\"username\" class=\"control-label\">用户名：</label>\n              <input type=\"text\" id=\"username\" placeholder=\"请输入用户名\" class=\"form-control\" formControlName=\"username\">\n              <span [class.hidden]=\"!formModule1.hasError('required','username')\" class=\"help-block\">用户名必填</span>\n              <span [class.hidden]=\"!formModule1.hasError('minlength','username')\" class=\"help-block\">用户名长度大于6</span>\n            </div>\n            <div formGroupName=\"passwordGroup\">\n              <div class=\"form-group\" [class.has-error]=\"formModule1.hasError('minlength',['passwordGroup','password'])\">\n                <label for=\"password\" class=\"control-label\">密码：</label>\n                <input type=\"password\" id=\"password\" placeholder=\"请输入密码\" class=\"form-control\" formControlName=\"password\">\n                <span [class.hidden]=\"!formModule1.hasError('minlength',['passwordGroup','password'])\" class=\"help-block\">密码必须大于6位</span>\n              </div>\n              <div class=\"form-group\" [class.has-error]=\"formModule1.hasError('passwordNoEquail','passwordGroup')\">\n                <label for=\"pass-confirm\" class=\"control-label\">确认密码：</label>\n                <input type=\"password\" id=\"pass-confirm\" placeholder=\"确认密码\" class=\"form-control\" formControlName=\"passwordConfirm\">\n                <span [class.hidden]=\"!formModule1.hasError('passwordNoEquail','passwordGroup')\" class=\"help-block\">两次密码必须相同</span>\n              </div>\n            </div>\n            <button class=\"btn btn-primary btn-pink\" type=\"submit\" >提交</button>\n          </form>\n        </div>\n        <div role=\"tabpanel\" class=\"tab-pane\" id=\"login\">\n          <form [formGroup]=\"formModule2\" (ngSubmit)=\"onLogin()\">\n            <div class=\"form-group\" [class.has-error]=\"formModule2.hasError('minlength','username_login')||formModule2.hasError('required','username_login')\">\n              <label for=\"username\" class=\"control-label\">用户名：</label>\n              <input type=\"text\" id=\"username-login\" placeholder=\"请输入用户名\" class=\"form-control\" formControlName=\"username_login\">\n              <span [class.hidden]=\"!formModule2.hasError('minlength','username_login')\" class=\"help-block\">长度必须大于6</span>\n              <span [class.hidden]=\"!formModule2.hasError('required','username_login')\" class=\"help-block\">是必填项</span>\n            </div>\n            <div class=\"form-group\" [class.has-error]=\"formModule2.hasError('minlength','password_login')||formModule2.hasError('required','password_login')\">\n              <label for=\"password\" class=\"control-label\">密码：</label>\n              <input type=\"password\" id=\"password-login\" placeholder=\"请输入密码\" class=\"form-control\" formControlName=\"password_login\">\n              <span [class.hidden]=\"!formModule2.hasError('minlength','password_login')\" class=\"help-block\">长度必须大于6</span>\n              <span [class.hidden]=\"!formModule2.hasError('required','password_login')\" class=\"help-block\">是必填项</span>\n            </div>\n            <button type=\"submit\" class=\"btn btn-primary btn-pink\">提交</button>\n          </form>\n        </div>\n      </div>\n      </div>\n      <div class=\"login-modal-body\" [class.hidden]=\"!islogin\">\n        <h1>用户名</h1>\n        <div>{{current_user?.username}}</div>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">取消</button>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1512,6 +1522,7 @@ module.exports = "<div class=\"container\">\n  <nav class=\"navbar navbar-invers
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__ = __webpack_require__("../../../../rxjs/Rx.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__share_videos_service__ = __webpack_require__("../../../../../src/app/share/videos.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NavbarComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1526,9 +1537,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var NavbarComponent = (function () {
-    function NavbarComponent(http) {
+    function NavbarComponent(http, videoService) {
         this.http = http;
+        this.videoService = videoService;
+        // 定义用户实例
+        this.users = null;
+        this.current_user = null;
         // 注册界面表单
         this.formModule1 = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* FormGroup */]({
             username: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["d" /* FormControl */](null, [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["e" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["e" /* Validators */].minLength(6)]),
@@ -1550,22 +1566,59 @@ var NavbarComponent = (function () {
     };
     NavbarComponent.prototype.onSignSubmit = function () {
         if (this.formModule1.valid) {
-            this.req.subscribe(function (res) {
-                console.log(res);
-            });
-            console.log(this.formModule1.valid);
+            console.log(this.formModule1.value);
+            var username_1 = this.formModule1.value.username;
+            var password = this.formModule1.value.passwordGroup.password;
+            var user = new __WEBPACK_IMPORTED_MODULE_4__share_videos_service__["b" /* User */](username_1, password);
+            var exist_user = void 0;
+            if (this.users != null) {
+                exist_user = this.users.find(function (ele) {
+                    if (ele.username === username_1) {
+                        return true;
+                    }
+                });
+            }
+            if (exist_user) {
+                alert("该用户名已被注册");
+                exist_user = null;
+                return false;
+            }
+            else {
+                if (this.users == null) {
+                    this.users = [user];
+                }
+                else {
+                    this.users.unshift(user);
+                }
+                console.log("\u6CE8\u518C\u65B0\u7528\u6237" + this.users);
+                alert("注册成功");
+                exist_user = null;
+            }
         }
         else {
             return false;
         }
     };
     NavbarComponent.prototype.onLogin = function () {
+        var _this = this;
         if (this.formModule2.valid) {
-            console.log("\u767B\u5F55\u8BF7\u6C42\u53D1\u9001" + this.formModule2.valid);
-        }
-        else {
-            console.log(this.formModule2.errors);
-            return false;
+            console.log(this.formModule2.value);
+            if (this.users != null) {
+                var isCorrect = this.users.find(function (ele) {
+                    var existusername = ele.username;
+                    var existpassword = ele.password;
+                    return (existusername === _this.formModule2.value.username_login &&
+                        existpassword === _this.formModule2.value.password_login);
+                });
+                if (isCorrect) {
+                    this.videoService.isLogin = true;
+                    this.current_user = new __WEBPACK_IMPORTED_MODULE_4__share_videos_service__["b" /* User */](this.formModule2.value.username_login, this.formModule2.value.password_login);
+                    this.islogin = true;
+                    this.videoService.loginEvent.emit(true);
+                    console.log("\u767B\u5F55\u6210\u529F\u3002islogin" + this.videoService.isLogin);
+                    $(".modal-body *").css({ "display": "none" });
+                }
+            }
         }
     };
     //////////密码验证////////////////
@@ -1583,10 +1636,10 @@ NavbarComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/navbar/navbar.component.html"),
         styles: [__webpack_require__("../../../../../src/app/navbar/navbar.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__share_videos_service__["a" /* VideosService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__share_videos_service__["a" /* VideosService */]) === "function" && _b || Object])
 ], NavbarComponent);
 
-var _a;
+var _a, _b;
 //# sourceMappingURL=navbar.component.js.map
 
 /***/ }),
@@ -1599,6 +1652,7 @@ var _a;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return VideosService; });
 /* unused harmony export Video */
 /* unused harmony export Comment */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return User; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1629,6 +1683,8 @@ var VideosService = (function () {
             new Comment(5, new Date(), '华为', '惊了'),
             new Comment(6, new Date(), 'vivo', '啊山东我还of还哦孵化器维护费黄金芳尽快回复hiof后发货萨哈迪欧哇哈掉收费和覅偶回去额')
         ];
+        this.isLogin = false;
+        this.loginEvent = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* EventEmitter */]();
     }
     VideosService.prototype.getVideoById = function (id) {
         var video;
@@ -1654,7 +1710,7 @@ var VideosService = (function () {
     return VideosService;
 }());
 VideosService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* Injectable */])(),
     __metadata("design:paramtypes", [])
 ], VideosService);
 
@@ -1677,6 +1733,14 @@ var Comment = (function () {
         this.user_id = user_id;
     }
     return Comment;
+}());
+
+var User = (function () {
+    function User(username, password) {
+        this.username = username;
+        this.password = password;
+    }
+    return User;
 }());
 
 //# sourceMappingURL=videos.service.js.map
@@ -1890,7 +1954,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".main-inner{\r\n    margin-left: 0px;\r\n    margin-right: 0px;\r\n}\r\n.container{\r\n    padding-top: 15px;\r\n    padding-bottom: 15px;\r\n}\r\n/***************左侧信息栏**********/\r\n.left-inner{\r\n    width: 40%;\r\n    float: left;\r\n}\r\n.video-info{\r\n    margin-top: 15px;\r\n    font-size: 0;\r\n}\r\n.divide-kind{\r\n    margin-top: 15px;\r\n    font-size: 10px;\r\n    color: silver;\r\n}\r\n.divide-kind>a{\r\n    color: silver;\r\n}\r\n.divide-kind>a:hover{\r\n    color: dodgerblue;\r\n    text-decoration: none;\r\n}\r\n.divide-kind>.video-date{\r\n    padding-left: 30px;\r\n    padding-right: 30px;\r\n}\r\n.info-line{\r\n    font-size: 14px;\r\n    display: inline-block;\r\n    width: 25%;\r\n}\r\n.info-line.info-line3{\r\n    border-left: solid 1px rgba(205,205,205,1);\r\n}\r\n.info-line{\r\n    text-align: center;\r\n}\r\n.icon-lichengdixian{\r\n    color: gold;\r\n}\r\n.icon-xihuan{\r\n    color: hotpink;\r\n}\r\n.info-number{\r\n    padding-left: 5px;\r\n}\r\n.inner-ad{\r\n    width: 100%;\r\n    height: 80px;\r\n    margin-top: 10px;\r\n    background: url(" + __webpack_require__("../../../../../src/images/inner-ad1.jpg") + ") no-repeat;\r\n}\r\n/****************右侧信息栏**************/\r\n.right-inner{\r\n    width: 315px;\r\n    float: right;\r\n}\r\n.right-inner>.face-pic{\r\n    display: inline-block;\r\n    vertical-align: middle;\r\n}\r\n.right-inner>.up-info{\r\n    vertical-align: middle;\r\n    display: inline-block;\r\n    font-size: 10px;\r\n    width: 240px;\r\n}\r\n.up-name{\r\n    font-size: 14px;\r\n}\r\n.right-inner>.face-pic>a>img{\r\n    width: 64px;\r\n    height: 64px;\r\n    background: url(" + __webpack_require__("../../../../../src/images/upface.jpg") + ");\r\n    background-size: cover;\r\n}\r\n.up-info-des{\r\n    color: silver;\r\n}\r\n.inner-email{\r\n    float: right;\r\n}\r\n.inner-email>a{\r\n    font-size: 14px;\r\n}\r\n.btn-choudian,\r\n.btn-guanzhu{\r\n    display: inline-block;\r\n    text-align: center;\r\n    border-radius: 6px;\r\n    line-height: 22px;\r\n}\r\n.btn-guanzhu{\r\n    width: 152px;\r\n    height: 22px;\r\n    border: solid dodgerblue 1px;\r\n    background-color: dodgerblue;\r\n    color: white;\r\n}\r\n.btn-guanzhu:hover{\r\n    background-color: cornflowerblue;\r\n}\r\n.btn-choudian{\r\n    width: 62px;\r\n    height: 22px;\r\n    border: solid hotpink 1px;\r\n    color: hotpink;\r\n    margin-left: 15px;\r\n    float: right;\r\n}\r\n.btn-choudian:hover{\r\n    background-color: hotpink;\r\n    color: white;\r\n}\r\n/*****************小于768px信息栏******************/\r\n@media screen and (max-width: 768px){\r\n    .left-inner{\r\n        float: none;\r\n        display: block;\r\n        width: 456px;\r\n    }\r\n    .right-inner{\r\n        float: none;\r\n        display: block;\r\n        width: 100%;\r\n        margin-top: 20px;\r\n    }\r\n}\r\n/***********video组件********************/\r\n.video-body{\r\n    background-color: #f6f9fa;\r\n    border-top: 1px solid #e5e9ef\r\n}\r\n.video-container{\r\n     font-size: 0px;\r\n }\r\nvideo{\r\n    display: inline-block;\r\n    height: 500px;\r\n    width: 70%;\r\n    font-size: 14px;\r\n    background-color: white;\r\n    background: url(" + __webpack_require__("../../../../../src/images/bilitv.jpg") + ") no-repeat;\r\n    background-position-x: 50%;\r\n    background-position-y: 50%;\r\n    vertical-align: top;\r\n    border: 1px solid #e5e9ef;\r\n}\r\n.video-danmu{\r\n    height: 500px;\r\n    width: 30%;\r\n    display: inline-block;\r\n    font-size: 14px;\r\n    background-color: #4e5157;\r\n    vertical-align: top;\r\n    color: #f6f9fa;\r\n}\r\n@media screen and (max-width: 996px){\r\n    video{\r\n        width: 100%;\r\n    }\r\n    .video-danmu{\r\n        display: none;\r\n    }\r\n}\r\n@media screen and (max-width: 768px){\r\n    video{\r\n        height: 400px;\r\n    }\r\n}\r\n@media screen and (max-width: 512px){\r\n    video{\r\n        height: 300px;\r\n    }\r\n}\r\n/****************播放器下方工具栏**********/\r\n.toolbar-container{\r\n    height: 82px;\r\n    border: 1px solid #e5e9ef;\r\n    margin-top: 20px;\r\n    border-radius: 4px;\r\n    background-color: white;\r\n    line-height: 82px;\r\n}\r\n@media screen and (max-width: 1280px){\r\n    .toolbar-container{\r\n        display: none;\r\n    }\r\n}\r\n/*************工具栏左边******************/\r\n.toolbar-container>.toolbar-left{\r\n    width: 30%;\r\n    display: inline-block;\r\n}\r\n.toolbar-container>.toolbar-left>.toolbar-share{\r\n    display: inline-block;\r\n    vertical-align: middle;\r\n    width: 80px;\r\n    text-align: center;\r\n    line-height: 1.42857143;\r\n}\r\n.toolbar-container>.toolbar-left>.toolbar-share>span,\r\n.toolbar-container>.toolbar-middle>.shoucang-container>span,\r\n.toolbar-container>.toolbar-middle>.coin-container>span,\r\n.toolbar-container>.toolbar-middle>.tv-container>span{ /********toolbar的文字部分,都写在一起了********/\r\n    display: block;\r\n    font-size: 20px;\r\n}\r\n.toolbar-container>.toolbar-left>.toolbar-share>span.share-number,\r\n.toolbar-container>.toolbar-middle>.shoucang-container>span.shoucang-number,\r\n.toolbar-container>.toolbar-middle>.coin-container>span.coin-number,\r\n.toolbar-container>.toolbar-middle>.tv-container>span.tv-number{ /********toolbar的数字部分,都写在一起了********/\r\n    font-size: 10px;\r\n    color: silver;\r\n}\r\n.toolbar-container>.toolbar-left>.sina,\r\n.toolbar-container>.toolbar-left>.qq-zoon,\r\n.toolbar-container>.toolbar-left>.qq,\r\n.toolbar-container>.toolbar-left>.tieba\r\n{\r\n    display: inline-block;\r\n    line-height: 1.42857143;\r\n    width: 40px;\r\n    height: 40px;\r\n    background: url(" + __webpack_require__("../../../../../src/images/icons.d895b84.png") + ") no-repeat -1357px;\r\n    vertical-align: middle;\r\n}\r\n.toolbar-container>.toolbar-left>.sina{\r\n    background-position-y: -586px;\r\n}\r\n.toolbar-container>.toolbar-left>.qq-zoon{\r\n    background-position-y: -726px;\r\n}\r\n.toolbar-container>.toolbar-left>.qq{\r\n    background-position-y: -796px;\r\n}\r\n.toolbar-container>.toolbar-left>.tieba{\r\n    background-position-y: -656px;\r\n}\r\n.toolbar-container>.toolbar-left>.border-left{\r\n    vertical-align: middle;\r\n    display: inline-block;\r\n    height: 20px;\r\n    width: 1px;\r\n    border-right: solid 1px gray;\r\n    margin-left: 25px;\r\n}\r\n/**************中间toolbar********************/\r\n/*星星*/\r\n.toolbar-container>.toolbar-middle{\r\n    width: 40%;\r\n    display: inline-block;\r\n}\r\n.toolbar-container>.toolbar-middle>.icon-star,\r\n.toolbar-container>.toolbar-middle>.icon-coin,\r\n.toolbar-container>.toolbar-middle>.icon-tv{\r\n    display: inline-block;\r\n    line-height: 1.42857143;\r\n    width: 80px;\r\n    height: 80px;\r\n    vertical-align: middle;\r\n}\r\n.toolbar-container>.toolbar-middle>.icon-coin{\r\n    position: relative;\r\n    top: -20px;\r\n}\r\n.toolbar-container>.toolbar-middle>.icon-star{\r\n    background: url(" + __webpack_require__("../../../../../src/images/anim-fav.png") + ") no-repeat -0px -0px;\r\n}\r\n.toolbar-container>.toolbar-middle>.shoucang-container,\r\n.toolbar-container>.toolbar-middle>.coin-container,\r\n.toolbar-container>.toolbar-middle>.tv-container{\r\n    display: inline-block;\r\n    line-height: 1.42857143;\r\n    vertical-align: middle;\r\n}\r\n/*硬币*/\r\n.toolbar-container>.toolbar-middle>.icon-coin{\r\n    background: url(" + __webpack_require__("../../../../../src/images/anim-coin.png") + ") no-repeat -0px -0px;\r\n}\r\n/*稍后播放*/\r\n.toolbar-container>.toolbar-middle>.icon-tv{\r\n    background: url(" + __webpack_require__("../../../../../src/images/tv.png") + ") no-repeat -0px -0px;\r\n}\r\n/******************toolbar右侧*********************/\r\n.toolbar-container>.toolbar-right{\r\n    width: 30%;\r\n    display: inline-block;\r\n}\r\n.toolbar-container>.toolbar-right>.icon-chongdian{\r\n    display: inline-block;\r\n    line-height: 1.42857143;\r\n    width: 80px;\r\n    height: 80px;\r\n    vertical-align: middle;\r\n}\r\n.toolbar-container>.toolbar-right>.icon-chongdian{\r\n    background: url(" + __webpack_require__("../../../../../src/images/anim-battery.png") + ") no-repeat -0px -0px;\r\n    position: relative;\r\n    left: 40px;\r\n}\r\n.toolbar-container>.toolbar-right>span{\r\n    display: inline-block;\r\n    font-size: 20px;\r\n    font-weight: bold;\r\n    color: #ff94eb;\r\n    height: 60px;\r\n    width: 60%;\r\n    border: 2px solid #ff94eb;\r\n    border-radius: 30px;\r\n    text-align: center;\r\n    line-height: 60px;\r\n    vertical-align: middle;\r\n}\r\n/****************清除浮动****************/\r\n", ""]);
+exports.push([module.i, ".main-inner{\r\n    margin-left: 0px;\r\n    margin-right: 0px;\r\n}\r\n.container{\r\n    padding-top: 15px;\r\n    padding-bottom: 15px;\r\n}\r\n/***************左侧信息栏**********/\r\n.left-inner{\r\n    width: 40%;\r\n    float: left;\r\n}\r\n.video-info{\r\n    margin-top: 15px;\r\n    font-size: 0;\r\n}\r\n.divide-kind{\r\n    margin-top: 15px;\r\n    font-size: 10px;\r\n    color: silver;\r\n}\r\n.divide-kind>a{\r\n    color: silver;\r\n}\r\n.divide-kind>a:hover{\r\n    color: dodgerblue;\r\n    text-decoration: none;\r\n}\r\n.divide-kind>.video-date{\r\n    padding-left: 30px;\r\n    padding-right: 30px;\r\n}\r\n.info-line{\r\n    font-size: 14px;\r\n    display: inline-block;\r\n    width: 25%;\r\n}\r\n.info-line.info-line3{\r\n    border-left: solid 1px rgba(205,205,205,1);\r\n}\r\n.info-line{\r\n    text-align: center;\r\n}\r\n.icon-lichengdixian{\r\n    color: gold;\r\n}\r\n.icon-xihuan{\r\n    color: hotpink;\r\n}\r\n.info-number{\r\n    padding-left: 5px;\r\n}\r\n.inner-ad{\r\n    width: 100%;\r\n    height: 80px;\r\n    margin-top: 10px;\r\n    background: url(" + __webpack_require__("../../../../../src/images/inner-ad1.jpg") + ") no-repeat;\r\n}\r\n/****************右侧信息栏**************/\r\n.right-inner{\r\n    width: 315px;\r\n    float: right;\r\n}\r\n.right-inner>.face-pic{\r\n    display: inline-block;\r\n    vertical-align: middle;\r\n}\r\n.right-inner>.up-info{\r\n    vertical-align: middle;\r\n    display: inline-block;\r\n    font-size: 10px;\r\n    width: 240px;\r\n}\r\n.up-name{\r\n    font-size: 14px;\r\n}\r\n.right-inner>.face-pic>a>img{\r\n    width: 64px;\r\n    height: 64px;\r\n    background: url(" + __webpack_require__("../../../../../src/images/upface.jpg") + ");\r\n    background-size: cover;\r\n}\r\n.up-info-des{\r\n    color: silver;\r\n}\r\n.inner-email{\r\n    float: right;\r\n}\r\n.inner-email>a{\r\n    font-size: 14px;\r\n}\r\n.btn-choudian,\r\n.btn-guanzhu{\r\n    display: inline-block;\r\n    text-align: center;\r\n    border-radius: 6px;\r\n    line-height: 22px;\r\n}\r\n.btn-guanzhu{\r\n    width: 152px;\r\n    height: 22px;\r\n    border: solid dodgerblue 1px;\r\n    background-color: dodgerblue;\r\n    color: white;\r\n}\r\n.btn-guanzhu:hover{\r\n    background-color: cornflowerblue;\r\n}\r\n.btn-choudian{\r\n    width: 62px;\r\n    height: 22px;\r\n    border: solid hotpink 1px;\r\n    color: hotpink;\r\n    margin-left: 15px;\r\n    float: right;\r\n}\r\n.btn-choudian:hover{\r\n    background-color: hotpink;\r\n    color: white;\r\n}\r\n/*****************小于768px信息栏******************/\r\n@media screen and (max-width: 768px){\r\n    .left-inner{\r\n        float: none;\r\n        display: block;\r\n        width: 315px;\r\n    }\r\n    .right-inner{\r\n        float: none;\r\n        display: block;\r\n        width: 100%;\r\n        margin-top: 20px;\r\n    }\r\n}\r\n/***********video组件********************/\r\n.video-body{\r\n    background-color: #f6f9fa;\r\n    border-top: 1px solid #e5e9ef\r\n}\r\n.video-container{\r\n     font-size: 0px;\r\n }\r\nvideo{\r\n    display: inline-block;\r\n    height: 500px;\r\n    width: 70%;\r\n    font-size: 14px;\r\n    background-color: white;\r\n    background: url(" + __webpack_require__("../../../../../src/images/bilitv.jpg") + ") no-repeat;\r\n    background-position-x: 50%;\r\n    background-position-y: 50%;\r\n    vertical-align: top;\r\n    border: 1px solid #e5e9ef;\r\n}\r\n.video-danmu{\r\n    height: 500px;\r\n    width: 30%;\r\n    display: inline-block;\r\n    font-size: 14px;\r\n    background-color: #4e5157;\r\n    vertical-align: top;\r\n    color: #f6f9fa;\r\n}\r\n@media screen and (max-width: 996px){\r\n    video{\r\n        width: 100%;\r\n    }\r\n    .video-danmu{\r\n        display: none;\r\n    }\r\n}\r\n@media screen and (max-width: 768px){\r\n    video{\r\n        height: 400px;\r\n    }\r\n}\r\n@media screen and (max-width: 512px){\r\n    video{\r\n        height: 300px;\r\n    }\r\n}\r\n/****************播放器下方工具栏**********/\r\n.toolbar-container{\r\n    height: 82px;\r\n    border: 1px solid #e5e9ef;\r\n    margin-top: 20px;\r\n    border-radius: 4px;\r\n    background-color: white;\r\n    line-height: 82px;\r\n}\r\n@media screen and (max-width: 1280px){\r\n    .toolbar-container{\r\n        display: none;\r\n    }\r\n}\r\n/*************工具栏左边******************/\r\n.toolbar-container>.toolbar-left{\r\n    width: 30%;\r\n    display: inline-block;\r\n}\r\n.toolbar-container>.toolbar-left>.toolbar-share{\r\n    display: inline-block;\r\n    vertical-align: middle;\r\n    width: 80px;\r\n    text-align: center;\r\n    line-height: 1.42857143;\r\n}\r\n.toolbar-container>.toolbar-left>.toolbar-share>span,\r\n.toolbar-container>.toolbar-middle>.shoucang-container>span,\r\n.toolbar-container>.toolbar-middle>.coin-container>span,\r\n.toolbar-container>.toolbar-middle>.tv-container>span{ /********toolbar的文字部分,都写在一起了********/\r\n    display: block;\r\n    font-size: 20px;\r\n}\r\n.toolbar-container>.toolbar-left>.toolbar-share>span.share-number,\r\n.toolbar-container>.toolbar-middle>.shoucang-container>span.shoucang-number,\r\n.toolbar-container>.toolbar-middle>.coin-container>span.coin-number,\r\n.toolbar-container>.toolbar-middle>.tv-container>span.tv-number{ /********toolbar的数字部分,都写在一起了********/\r\n    font-size: 10px;\r\n    color: silver;\r\n}\r\n.toolbar-container>.toolbar-left>.sina,\r\n.toolbar-container>.toolbar-left>.qq-zoon,\r\n.toolbar-container>.toolbar-left>.qq,\r\n.toolbar-container>.toolbar-left>.tieba\r\n{\r\n    display: inline-block;\r\n    line-height: 1.42857143;\r\n    width: 40px;\r\n    height: 40px;\r\n    background: url(" + __webpack_require__("../../../../../src/images/icons.d895b84.png") + ") no-repeat -1357px;\r\n    vertical-align: middle;\r\n}\r\n.toolbar-container>.toolbar-left>.sina{\r\n    background-position-y: -586px;\r\n}\r\n.toolbar-container>.toolbar-left>.qq-zoon{\r\n    background-position-y: -726px;\r\n}\r\n.toolbar-container>.toolbar-left>.qq{\r\n    background-position-y: -796px;\r\n}\r\n.toolbar-container>.toolbar-left>.tieba{\r\n    background-position-y: -656px;\r\n}\r\n.toolbar-container>.toolbar-left>.border-left{\r\n    vertical-align: middle;\r\n    display: inline-block;\r\n    height: 20px;\r\n    width: 1px;\r\n    border-right: solid 1px gray;\r\n    margin-left: 25px;\r\n}\r\n/**************中间toolbar********************/\r\n/*星星*/\r\n.toolbar-container>.toolbar-middle{\r\n    width: 40%;\r\n    display: inline-block;\r\n}\r\n.toolbar-container>.toolbar-middle>.icon-star,\r\n.toolbar-container>.toolbar-middle>.icon-coin,\r\n.toolbar-container>.toolbar-middle>.icon-tv{\r\n    display: inline-block;\r\n    line-height: 1.42857143;\r\n    width: 80px;\r\n    height: 80px;\r\n    vertical-align: middle;\r\n}\r\n.toolbar-container>.toolbar-middle>.icon-coin{\r\n    position: relative;\r\n    top: -20px;\r\n}\r\n.toolbar-container>.toolbar-middle>.icon-star{\r\n    background: url(" + __webpack_require__("../../../../../src/images/anim-fav.png") + ") no-repeat -0px -0px;\r\n}\r\n.toolbar-container>.toolbar-middle>.shoucang-container,\r\n.toolbar-container>.toolbar-middle>.coin-container,\r\n.toolbar-container>.toolbar-middle>.tv-container{\r\n    display: inline-block;\r\n    line-height: 1.42857143;\r\n    vertical-align: middle;\r\n}\r\n/*硬币*/\r\n.toolbar-container>.toolbar-middle>.icon-coin{\r\n    background: url(" + __webpack_require__("../../../../../src/images/anim-coin.png") + ") no-repeat -0px -0px;\r\n}\r\n/*稍后播放*/\r\n.toolbar-container>.toolbar-middle>.icon-tv{\r\n    background: url(" + __webpack_require__("../../../../../src/images/tv.png") + ") no-repeat -0px -0px;\r\n}\r\n/******************toolbar右侧*********************/\r\n.toolbar-container>.toolbar-right{\r\n    width: 30%;\r\n    display: inline-block;\r\n}\r\n.toolbar-container>.toolbar-right>.icon-chongdian{\r\n    display: inline-block;\r\n    line-height: 1.42857143;\r\n    width: 80px;\r\n    height: 80px;\r\n    vertical-align: middle;\r\n}\r\n.toolbar-container>.toolbar-right>.icon-chongdian{\r\n    background: url(" + __webpack_require__("../../../../../src/images/anim-battery.png") + ") no-repeat -0px -0px;\r\n    position: relative;\r\n    left: 40px;\r\n}\r\n.toolbar-container>.toolbar-right>span{\r\n    display: inline-block;\r\n    font-size: 20px;\r\n    font-weight: bold;\r\n    color: #ff94eb;\r\n    height: 60px;\r\n    width: 60%;\r\n    border: 2px solid #ff94eb;\r\n    border-radius: 30px;\r\n    text-align: center;\r\n    line-height: 60px;\r\n    vertical-align: middle;\r\n}\r\n/****************清除浮动****************/\r\n", ""]);
 
 // exports
 
